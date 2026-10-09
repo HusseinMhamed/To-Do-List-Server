@@ -4,7 +4,7 @@ import { Category } from '../../modules/categories/category.model.js'
 export const association = ()=>{
     User.hasMany(Task,{foreignKey:'creatorId',
         as:'taskCreator'
-        ,onDelete: 'CASCADE'
+        ,onDelete: 'SET NULL'
         ,onUpdate: 'CASCADE'
     });
     User.hasMany(Task,{foreignKey:'implementorId',
@@ -18,7 +18,7 @@ export const association = ()=>{
         ,onUpdate: 'CASCADE'
     });
     Task.belongsTo(User,{foreignKey:'implementorId'
-        ,as:'implementor'
+        ,as:'taskImplementer'
         ,onDelete: 'CASCADE'
         ,onUpdate: 'CASCADE'
     });
