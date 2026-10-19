@@ -15,6 +15,6 @@ export const connection =async ()=>{
        await sequelize.sync()
        console.log("connected to database successfully")
     }catch(err){
-        console.log("database err:" , err.message)
+        console.log("database Error:" , err )
     }
 }
