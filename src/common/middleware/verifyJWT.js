@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { AppError } from '../../utils/appError.js'
-
+import { User } from '../../modules/users/user.model.js'
 export const verifyJWT = async (req ,res , next)=>{
     const headers = req.headers.authorization || req.headers.Authorization
 
@@ -14,6 +14,8 @@ export const verifyJWT = async (req ,res , next)=>{
     }catch(err){
         throw new AppError('invalid of expired token', 401)
     }
-    req.user ={ id:decoded.id ,role:decoded.role};
+    const user = await User.findByPk(decoded.id)
+    // console.log(user)
+    req.user ={ id:user.id ,role:user.role};
     next();
 }

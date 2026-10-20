@@ -83,6 +83,9 @@ export const deleteUser =async(req,res)=>{
 
 export const login = async (req, res)=>{
     const { email , password} = req.body;
+    if(!email || !password){
+        throw new AppError('please fill all', 400)
+    }
     const user = await User.scope('withpassword').findOne({where:{email}});
     if(!user){
         throw new AppError('user not found',404);

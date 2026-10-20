@@ -2,6 +2,7 @@ import { ForeignKeyConstraintError, UniqueConstraintError, ValidationError } fro
 import {AppError} from '../../utils/appError.js'
 export const globalErrorHandeller = (err,req,res,next)=>{
       // console.error("err here",err)
+      // console.error("ACTUAL ERROR:", err)
       let status , message;
     if(err instanceof AppError){
       status = err.status;
