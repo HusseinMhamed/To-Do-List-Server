@@ -1,7 +1,7 @@
 import { Category } from './category.model.js'
 import { AppError} from '../../utils/appError.js'
 
-export const getCatigories =async(req,res)=>{
+export const getCategories =async(req,res)=>{
     let categories;
     if (req.user.role === 'admin') {
         categories = await Category.findAll();
@@ -11,7 +11,7 @@ export const getCatigories =async(req,res)=>{
     res.status(200).json(categories);
 }
 
-export const getCatigoryById = async(req,res)=>{
+export const getCategoryById = async(req,res)=>{
      const { id } = req.params;
     const category = await Category.findByPk(id);
     

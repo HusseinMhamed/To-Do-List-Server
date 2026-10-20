@@ -5,7 +5,9 @@ import jwt from 'jsonwebtoken'
 
 export const register = async(req,res)=>{
 let {name , email , password}= req.body;
-
+if(!name || !email || !password){
+    throw new AppError('please fill all' , 400)
+}
 const founduser = await User.findOne({where:{email}})
 
 if(founduser){
@@ -15,8 +17,8 @@ if(founduser){
 const hashedPassword =await bcrypt.hash(password , 10)
 
 let user = await User.create({name,email,password:hashedPassword})
-const accessToken = jwt.sign({id:user.id}, process.env.JWT_ACCESS_SECRET,{ expiresIn: '15m' })
-const refreshToken = jwt.sign({id:user.id}, process.env.JWT_REFRESH_SECRET, {expiresIn: '7d'})
+const accessToken = jwt.sign({id:user.id ,role : user.role}, process.env.JWT_ACCESS_SECRET,{ expiresIn: '15m' })
+const refreshToken = jwt.sign({id:user.id , role: user.role}, process.env.JWT_REFRESH_SECRET, {expiresIn: '7d'})
 res.cookie('jwt',refreshToken , {
     httpOnly:true,
     // secure: true,
@@ -89,8 +91,8 @@ export const login = async (req, res)=>{
     if(!matched){
         throw new AppError('incorrect Password',401);
     }
-    const accessToken = jwt.sign({id:user.id},process.env.JWT_ACCESS_SECRET,{expiresIn:'15m'})
-    const refreshToken = jwt.sign({id:user.id}, process.env.JWT_REFRESH_SECRET, {expiresIn:'7d'})
+    const accessToken = jwt.sign({id:user.id , role: user.role},process.env.JWT_ACCESS_SECRET,{expiresIn:'15m'})
+    const refreshToken = jwt.sign({id:user.id , role:user.role}, process.env.JWT_REFRESH_SECRET, {expiresIn:'7d'})
     res.cookie('jwt',refreshToken,{
         httpOnly:true,
         maxAge: 1000*60*60*24*7
@@ -113,7 +115,7 @@ export const refresh = async (req,res)=>{
     }catch(err){
         throw new AppError(err.message,401)
     }
-    const accessToken = jwt.sign({id:decrypted.id},process.env.JWT_ACCESS_SECRET,{expiresIn:'15m'})
+    const accessToken = jwt.sign({id:decrypted.id , role:decrypted.role},process.env.JWT_ACCESS_SECRET,{expiresIn:'15m'})
     res.status(200).json({accessToken})
 
 }

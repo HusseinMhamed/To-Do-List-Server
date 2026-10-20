@@ -14,6 +14,6 @@ export const verifyJWT = async (req ,res , next)=>{
     }catch(err){
         throw new AppError('invalid of expired token', 401)
     }
-    req.user ={ id:decoded.id ,role:user.role};
+    req.user ={ id:decoded.id ,role:decoded.role};
     next();
 }
