@@ -15,6 +15,7 @@ export const verifyJWT = async (req ,res , next)=>{
         throw new AppError('invalid of expired token', 401)
     }
     const user = await User.findByPk(decoded.id)
+    if (!user) throw new AppError('User no longer exists', 401)
     // console.log(user)
     req.user ={ id:user.id ,role:user.role};
     next();
