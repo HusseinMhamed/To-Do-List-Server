@@ -4,8 +4,10 @@ import { globalErrorHandeller } from './common/middleware/globalErrorHandeller.j
 import { userRouter } from './modules/users/user.controller.js';
 import { CategoryRouter } from './modules/categories/category.controller.js';
 import { taskRouter } from './modules/tasks/task.controller.js';
+import cookieParser from 'cookie-parser';
 export function bootstrab (app,express){
     app.use(express.json())
+    app.use(cookieParser())
     connection();
     association();
     app.use('/user',userRouter)
