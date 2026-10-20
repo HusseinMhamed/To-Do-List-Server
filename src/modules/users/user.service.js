@@ -130,3 +130,15 @@ export const logout = async(req,res)=>{
     })
     res.status(200).json({message:"logged out successfully"})
 }
+
+export const makeUserAdmin = async(req,res)=>{
+    const id = req.params.id;
+    const user = await User.findByPk(id);
+    if (!user) {
+        throw new AppError('User not found', 404);
+    }
+    user.role = 'admin';
+    await user.save();
+
+    res.status(200).json({ message: 'User is admin now!', user });
+}
